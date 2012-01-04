@@ -1,4 +1,6 @@
 <?PHP
+namespace com\druid628;
+
 abstract class BaseClass628 {
 
   public function get($fieldName)
