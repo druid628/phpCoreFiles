@@ -136,4 +136,19 @@ abstract class BaseClass628 {
                 return $tmpObject;
         }
 
+        public function getPerformance()
+        {
+            $mem_usage = memory_get_peak_usage();
+            if ($mem_usage < 1024) 
+            {
+                 echo $mem_usage." bytes"; 
+            }elseif ($mem_usage < 1048576) 
+            {
+                 echo round($mem_usage/1024,2)." kilobytes"; 
+            }else 
+            {
+                 echo round($mem_usage/1048576,2)." megabytes"; 
+            }
+        }
+
 }
