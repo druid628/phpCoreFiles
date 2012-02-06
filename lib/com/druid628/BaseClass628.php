@@ -136,6 +136,11 @@ abstract class BaseClass628 {
                 return $tmpObject;
         }
 
+        public function is_array_multi($array)
+        {
+          return (bool) (count($array) != count($array, COUNT_RECURSIVE));
+        }
+
         public function getPerformance()
         {
             $mem_usage = memory_get_peak_usage();
