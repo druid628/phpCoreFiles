@@ -201,4 +201,23 @@ abstract class BaseClass628 {
                 return $whoa;
         }
 
+        public function isCli() 
+        {
+            return php_sapi_name()==="cli";
+        }
+
+        public function formatErrorDOS($errorType, $message, $correction)
+        {
+            $errorType = strtoupper($errorType);
+                return <<<EOF
+################
+##
+## $errorType ERROR: $message
+##
+################
+\n\n\t\t$errorType: $correction \n\n
+Bad command or file name.\nC:\>_\n
+EOF;
+
+        }
 }
