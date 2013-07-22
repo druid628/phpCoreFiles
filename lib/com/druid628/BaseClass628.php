@@ -82,20 +82,6 @@ abstract class BaseClass628 {
 
         /**
          *
-         * For some reason there is no lcfirst function but there 
-         * is a ucfirst... oh well that's fixed. :)
-         * 
-         * @param string $string
-         * @return string 
-         */
-        public function lcfirst($string)
-        {
-                $string{0} = strtolower($string{0});
-                return $string;
-        }
-
-        /**
-         *
          * cast transfers a standard PHP object to a class of your choice
          * 
          * 
