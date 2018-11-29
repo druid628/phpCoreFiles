@@ -16,6 +16,7 @@
     <testsuites>
         <testsuite name="Core628 Test Suite">
             <directory>tests</directory>
+            <directory suffix=".php">tests/Unit</directory>
         </testsuite>
     </testsuites>
 

@@ -14,7 +14,7 @@ class Array628 implements \ArrayAccess, \Iterator
     /** @var array $data */
     private $data;
 
-    public function __construct($data)
+    public function __construct($data = null)
     {
         $this->data = $data;
         $this->position = 0;

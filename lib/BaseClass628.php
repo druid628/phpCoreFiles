@@ -2,6 +2,13 @@
 
 namespace com\druid628;
 
+/**
+ * Class BaseClass628
+ * @package com\druid628
+ *
+ * @deprecated - 2018-28-11
+ * @codeCoverageIgnore
+ */
 abstract class BaseClass628 {
 
         /**
