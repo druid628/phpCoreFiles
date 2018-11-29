@@ -3,3 +3,4 @@ php:
   - '7.1'
   - '7.2'
   - hhvm # on Trusty only
+install: composer install
