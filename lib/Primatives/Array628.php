@@ -111,7 +111,7 @@ class Array628 implements \ArrayAccess, \Iterator
      */
     public function offsetUnset($offset): void
     {
-       unset($this->data[$offset]);
+        unset($this->data[$offset]);
     }
 
     /**
