@@ -3,7 +3,7 @@
 namespace tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use com\druid628\Traits\ArrayTrait;
+use DruiD628\Traits\ArrayTrait;
 
 class MockArrayTraitClass
 {

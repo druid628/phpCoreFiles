@@ -2,7 +2,7 @@
 
 namespace tests\Unit;
 
-use com\druid628\Utilities\CSVUtil;
+use DruiD628\Utilities\CSVUtil;
 use PHPUnit\Framework\TestCase;
 
 class CSVUtilTest extends TestCase

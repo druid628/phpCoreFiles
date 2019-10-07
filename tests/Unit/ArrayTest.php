@@ -2,7 +2,7 @@
 
 namespace tests\Unit;
 
-use com\druid628\Primatives\Array628;
+use DruiD628\Primatives\Array628;
 use PHPUnit\Framework\TestCase;
 
 class ArrayTest extends TestCase
@@ -29,7 +29,7 @@ class ArrayTest extends TestCase
             'd' => 'def',
         ]);
 
-        $this->assertInstanceOf('\com\druid628\Primatives\String628', $array628->implode( " "));
+        $this->assertInstanceOf('\DruiD628\Primatives\String628', $array628->implode( " "));
     }
 
     public function testNext()

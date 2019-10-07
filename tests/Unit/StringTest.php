@@ -2,7 +2,7 @@
 
 namespace tests\Unit;
 
-use com\druid628\Primatives\String628;
+use DruiD628\Primatives\String628;
 use PHPUnit\Framework\TestCase;
 
 class StringTest extends TestCase
@@ -32,7 +32,7 @@ class StringTest extends TestCase
     {
         $string628 = new String628("stuff and thangs Coral");
         $array628 = $string628->explode(" ");
-        $this->assertInstanceOf("\com\druid628\Primatives\Array628", $array628);
+        $this->assertInstanceOf("\DruiD628\Primatives\Array628", $array628);
     }
 
     public function testGetValue()

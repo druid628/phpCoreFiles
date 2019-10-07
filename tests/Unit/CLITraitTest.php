@@ -3,7 +3,7 @@
 namespace tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use com\druid628\Traits\CLITrait;
+use DruiD628\Traits\CLITrait;
 
 class MockCLITraitClass
 {

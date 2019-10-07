@@ -1,6 +1,6 @@
 <?php
 
-namespace com\druid628\Traits;
+namespace DruiD628\Traits;
 
 
 trait GetSetTrait

@@ -3,7 +3,7 @@
 namespace tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use com\druid628\Traits\GetSetTrait;
+use DruiD628\Traits\GetSetTrait;
 
 class MockGetSetTraitClass
 {
