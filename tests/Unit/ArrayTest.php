@@ -11,11 +11,11 @@ class ArrayTest extends TestCase
     public function testCount()
     {
         $array628 = new Array628([
-            'a' => 'abc',
-            'b' => 'bcd',
-            'c' => 'cde',
-            'd' => 'def',
-        ]);
+            'abc',
+            'bcd',
+            'cde',
+            'def',
+        ] );
 
         $this->assertEquals('4', $array628->count());
     }
@@ -23,11 +23,11 @@ class ArrayTest extends TestCase
     public function testImplode()
     {
         $array628 = new Array628([
-            'a' => 'abc',
-            'b' => 'bcd',
-            'c' => 'cde',
-            'd' => 'def',
-        ]);
+            'abc',
+            'bcd',
+            'cde',
+            'def',
+        ] );
 
         $this->assertInstanceOf('\DruiD628\Primatives\String628', $array628->implode( " "));
     }
@@ -35,10 +35,10 @@ class ArrayTest extends TestCase
     public function testNext()
     {
         $array628 = new Array628([
-            'a' => 'abc',
-            'b' => 'bcd',
-            'c' => 'cde',
-            'd' => 'def',
+            'abc',
+            'bcd',
+            'cde',
+            'def',
         ]);
 
         $this->assertEquals('abc', $array628->current());
@@ -49,11 +49,11 @@ class ArrayTest extends TestCase
     public function testPrev()
     {
         $array628 = new Array628([
-            'a' => 'abc',
-            'b' => 'bcd',
-            'c' => 'cde',
-            'd' => 'def',
-        ]);
+            'abc',
+            'bcd',
+            'cde',
+            'def',
+        ] );
 
         $this->assertEquals('abc', $array628->current());
         $array628->next();
@@ -67,10 +67,10 @@ class ArrayTest extends TestCase
     public function testCurrent()
     {
         $array628 = new Array628([
-            'a' => 'abc',
-            'b' => 'bcd',
-            'c' => 'cde',
-            'd' => 'def',
+            'abc',
+            'bcd',
+            'cde',
+            'def',
         ]);
 
         $this->assertEquals('abc', $array628->current());
@@ -79,23 +79,23 @@ class ArrayTest extends TestCase
     public function testKey()
     {
         $array628 = new Array628([
-            'a' => 'abc',
-            'b' => 'bcd',
-            'c' => 'cde',
-            'd' => 'def',
+            'abc',
+            'bcd',
+            'cde',
+            'def',
         ]);
 
         $array628->next();
-        $this->assertEquals('b', $array628->key());
+        $this->assertEquals(1, $array628->key());
     }
 
     public function testsetData()
     {
         $arrayData = [
-            'a' => 'abc',
-            'b' => 'bcd',
-            'c' => 'cde',
-            'd' => 'def',
+            'abc',
+            'bcd',
+            'cde',
+            'def',
         ];
 
         $array628 = new Array628();
@@ -107,38 +107,38 @@ class ArrayTest extends TestCase
     public function testRewind()
     {
         $array628 = new Array628([
-            'a' => 'abc',
-            'b' => 'bcd',
-            'c' => 'cde',
-            'd' => 'def',
+            'abc',
+            'bcd',
+            'cde',
+            'def',
         ]);
 
         $array628->next();
         $array628->next();
         $array628->next();
-        $this->assertEquals('d', $array628->key());
+        $this->assertEquals(3, $array628->key());
         $array628->rewind();
-        $this->assertEquals('a', $array628->key());
+        $this->assertEquals(0, $array628->key());
 
     }
 
     public function testOffsets()
     {
         $array628 = new Array628([
-            'a' => 'abc',
-            'b' => 'bcd',
-            'c' => 'cde',
-            'd' => 'def',
+            'abc',
+            'bcd',
+            'cde',
+            'def',
         ]);
         $stuffAndThangs = 'stuff and thangs';
-        $this->assertTrue($array628->offsetExists('a'));
-        $this->assertFalse($array628->offsetExists('z'));
-        $this->assertEquals('abc', $array628->offsetGet('a'));
-        $array628->offsetSet('z', $stuffAndThangs );
-        $this->assertTrue($array628->offsetExists('z'));
-        $this->assertEquals($stuffAndThangs , $array628->offsetGet('z'));
-        $array628->offsetUnset('z');
-        $this->assertFalse($array628->offsetExists('z'));
+        $this->assertTrue($array628->offsetExists(0));
+        $this->assertFalse($array628->offsetExists(25));
+        $this->assertEquals('abc', $array628->offsetGet(0));
+        $array628->offsetSet(25, $stuffAndThangs );
+        $this->assertTrue($array628->offsetExists(25));
+        $this->assertEquals($stuffAndThangs , $array628->offsetGet(25));
+        $array628->offsetUnset(25);
+        $this->assertFalse($array628->offsetExists(25));
     }
 
     public function testInterfaces()
@@ -146,5 +146,42 @@ class ArrayTest extends TestCase
          $array628 = new Array628();
          $this->assertInstanceOf('\ArrayAccess', $array628);
          $this->assertInstanceOf('\Iterator', $array628);
+         $this->assertInstanceOf('\DruiD628\Primatives\Base\Contracts\ArrayInterface', $array628);
+    }
+
+    public function testPositiveStrictness()
+    {
+        $array628 = new Array628([
+            'abc',
+            'bcd',
+            'cde',
+            'def',
+        ]);
+
+        $this->assertEquals('4', $array628->count());
+        $this->assertTrue($array628->isStrict());
+        try {
+            $x = new Array628([
+                'a' => 'abc',
+                'b' => 'bcd',
+                'c' => 'cde'
+            ]);
+        } catch (\Exception $e) {
+
+            $this->assertInstanceOf('DruiD628\Exceptions\InvalidKeyTypeException', $e);
+        }
+    }
+
+    public function testNegativeStrictness()
+    {
+        $array628 = new Array628([
+            'a' => 'abc',
+            'b' => 'bcd',
+            'c' => 'cde',
+            'd' => 'def',
+        ], false);
+
+        $this->assertEquals('4', $array628->count());
+        $this->assertFalse($array628->isStrict());
     }
 }

@@ -7,20 +7,18 @@ use DruiD628\Primatives\Base\Contracts\ArrayInterface;
 use DruiD628\Primatives\Base\Contracts\StringInterface;
 use DruiD628\Primatives\String628;
 
-class AbstractArray implements ArrayInterface
+class AbstractHashTable implements ArrayInterface
 {
-    /** @var boolean $strict */
-    protected $strict;
     /** @var int $position position sentinel variable */
     protected $position;
     /** @var array $data */
     protected $data;
 
-    public function __construct($data = [], $strict = true)
+    public function __construct($data = [])
     {
-        $this->strict = $strict;
+
         if (!$this->validateKeys($data)) {
-            throw new InvalidKeyTypeException("Invalid Key type for Array");
+            throw new InvalidKeyTypeException("Invalid Key type for HashTable");
         }
         $this->data     = $data;
         $this->position = 0;
@@ -103,8 +101,8 @@ class AbstractArray implements ArrayInterface
      */
     public function offsetSet($offset, $value)
     {
-        if ($this->isStrict() && !$this->validateKey($offset)) {
-            throw new InvalidKeyTypeException(sprintf("Invalid Key type (%s) for Array", gettype($offset)));
+        if (!$this->validateKey($offset)) {
+            throw new InvalidKeyTypeException(sprintf("Invalid Key type (%s) for HashTable", gettype($offset)));
         }
         return $this->data[$offset] = $value;
     }
@@ -196,18 +194,16 @@ class AbstractArray implements ArrayInterface
         $this->data = $data;
     }
 
-    public function isStrict()
+    public function getKeys()
     {
-        return $this->strict;
+        return array_keys($this->data);
     }
 
     protected function validateKeys(array $dataSet)
     {
-        if ($this->isStrict()) {
-            foreach (array_keys($dataSet) as $key) {
-                if (!($this->validateKey($key))) {
-                    return false;
-                }
+        foreach (array_keys($dataSet) as $key) {
+            if (!($this->validateKey($key))) {
+                return false;
             }
         }
 
@@ -216,6 +212,6 @@ class AbstractArray implements ArrayInterface
 
     protected function validateKey($key)
     {
-        return is_int($key);
+        return is_string($key);
     }
 }
