@@ -9,7 +9,7 @@ use DruiD628\Primatives\Base\AbstractArray;
  *
  * @package DruiD628\Primatives
  */
-class Array628 extends AbstractArray
+final class Array628 extends AbstractArray
 {
 
 

@@ -194,6 +194,8 @@ class HashTableTest extends TestCase
         $value = "this Shouldn't Work";
 
         $this->assertFalse($hashtable628->add($key, $value));
+        $hashtable628['six'] = 'asdf';
+        $this->assertEquals('4', $hashtable628->count());
     }
 
     public function testGetKeys()
@@ -219,4 +221,57 @@ class HashTableTest extends TestCase
 
         $this->assertEquals(['abc', 'bcd', 'cde', 'def'], $hashtable628->getValues());
     }
+
+    public function testArrayAccess()
+    {
+        $data      = [
+            'a' => 'abc',
+            'b' => 'bcd',
+            'c' => 'cde',
+            'd' => 'def',
+        ];
+        $hashTable = new HashTable628($data);
+
+        $this->assertEquals($data['b'], $hashTable['b']);
+    }
+
+    public function testFixedSize()
+    {
+        $data = [
+            'a' => 'abc',
+            'b' => 'bcd',
+            'c' => 'cde',
+            'd' => 'def',
+        ];
+
+        $hashTable = new HashTable628($data, false, 5);
+
+        $this->assertTrue($hashTable->isFixedSize());
+        $this->assertEquals(5, $hashTable->count());
+        $this->assertEquals(0, $hashTable[4]);
+
+        $hashTable->add('seven', "YOU KEELING ME");
+        $this->assertFalse($hashTable['seven']);
+    }
+
+    public function testLockSize()
+    {
+        $data = [
+            'a' => 'abc',
+            'b' => 'bcd',
+            'c' => 'cde',
+            'd' => 'def',
+        ];
+
+        $hashTable = new HashTable628($data);
+        $hashTable->lockSize();
+
+        $this->assertTrue($hashTable->isFixedSize());
+        $this->assertEquals(4, $hashTable->count());
+        $this->assertEquals(0, $hashTable[4]);
+
+        $hashTable->add('seven', "YOU KEELING ME");
+        $this->assertFalse($hashTable['seven']);
+    }
+
 }

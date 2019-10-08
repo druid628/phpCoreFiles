@@ -15,7 +15,7 @@ class ArrayTest extends TestCase
             'bcd',
             'cde',
             'def',
-        ] );
+        ]);
 
         $this->assertEquals('4', $array628->count());
     }
@@ -27,9 +27,9 @@ class ArrayTest extends TestCase
             'bcd',
             'cde',
             'def',
-        ] );
+        ]);
 
-        $this->assertInstanceOf('\DruiD628\Primatives\String628', $array628->implode( " "));
+        $this->assertInstanceOf('\DruiD628\Primatives\String628', $array628->implode(" "));
     }
 
     public function testNext()
@@ -53,7 +53,7 @@ class ArrayTest extends TestCase
             'bcd',
             'cde',
             'def',
-        ] );
+        ]);
 
         $this->assertEquals('abc', $array628->current());
         $array628->next();
@@ -124,7 +124,7 @@ class ArrayTest extends TestCase
 
     public function testOffsets()
     {
-        $array628 = new Array628([
+        $array628       = new Array628([
             'abc',
             'bcd',
             'cde',
@@ -134,19 +134,19 @@ class ArrayTest extends TestCase
         $this->assertTrue($array628->offsetExists(0));
         $this->assertFalse($array628->offsetExists(25));
         $this->assertEquals('abc', $array628->offsetGet(0));
-        $array628->offsetSet(25, $stuffAndThangs );
+        $array628->offsetSet(25, $stuffAndThangs);
         $this->assertTrue($array628->offsetExists(25));
-        $this->assertEquals($stuffAndThangs , $array628->offsetGet(25));
+        $this->assertEquals($stuffAndThangs, $array628->offsetGet(25));
         $array628->offsetUnset(25);
         $this->assertFalse($array628->offsetExists(25));
     }
 
     public function testInterfaces()
     {
-         $array628 = new Array628();
-         $this->assertInstanceOf('\ArrayAccess', $array628);
-         $this->assertInstanceOf('\Iterator', $array628);
-         $this->assertInstanceOf('\DruiD628\Primatives\Base\Contracts\ArrayInterface', $array628);
+        $array628 = new Array628();
+        $this->assertInstanceOf('\ArrayAccess', $array628);
+        $this->assertInstanceOf('\Iterator', $array628);
+        $this->assertInstanceOf('\DruiD628\Primatives\Base\Contracts\ArrayInterface', $array628);
     }
 
     public function testPositiveStrictness()
@@ -183,5 +183,18 @@ class ArrayTest extends TestCase
 
         $this->assertEquals('4', $array628->count());
         $this->assertFalse($array628->isStrict());
+    }
+
+    public function testArrayAccess()
+    {
+        $data     = [
+            'abc',
+            'bcd',
+            'cde',
+            'def',
+        ];
+        $array628 = new Array628($data);
+
+        $this->assertEquals($data[2], $array628[2]);
     }
 }

@@ -3,9 +3,10 @@
 namespace DruiD628\Primatives\Base;
 
 use DruiD628\Exceptions\InvalidKeyTypeException;
+use DruiD628\Primatives\{String628};
 use DruiD628\Primatives\Base\Contracts\HashTableInterface;
 use DruiD628\Primatives\Base\Contracts\StringInterface;
-use DruiD628\Primatives\{String628, Array628};
+use \Exception;
 
 class AbstractHashTable implements HashTableInterface
 {
@@ -18,15 +19,28 @@ class AbstractHashTable implements HashTableInterface
     /** @var array $data */
     protected $data;
 
-    public function __construct($data = [], $readOnly = false)
+    /** @var int $fixedSize locking a HashTable to a fixed size */
+    protected $fixedSize;
+
+    public function __construct($data = [], $readOnly = false, $fixedSize = null)
     {
         if (!$this->validateKeys($data)) {
             throw new InvalidKeyTypeException("Invalid Key type for HashTable");
         }
+        if (is_int($fixedSize)) {
+            if (count($data) < $fixedSize) {
+                $data = array_pad($data, $fixedSize, 0);
+            } elseif (count($data) > $fixedSize) {
+                throw new Exception('HashTable data size is larger than defined size');
+            }
+        } elseif (is_bool($fixedSize) && $fixedSize) {
+            $fixedSize = count($data);
+        }
 
-        $this->data     = $data;
-        $this->position = 0;
-        $this->readOnly = $readOnly;
+        $this->data      = $data;
+        $this->position  = 0;
+        $this->readOnly  = $readOnly;
+        $this->fixedSize = $fixedSize;
     }
 
     /**
@@ -138,6 +152,13 @@ class AbstractHashTable implements HashTableInterface
             return false;
         }
 
+        if (!$this->offsetExists($offset) &&
+            $this->isFixedSize() &&
+            $this->count() == $this->fixedSize
+           ) {
+
+            return false;
+        }
         if (!$this->validateKey($offset)) {
             throw new InvalidKeyTypeException(sprintf("Invalid Key type (%s) for HashTable", gettype($offset)));
         }
@@ -264,6 +285,23 @@ class AbstractHashTable implements HashTableInterface
     public function isReadOnly()
     {
         return $this->readOnly;
+    }
+
+    /**
+     * Locks HashTable to current size
+     *
+     * @return $this
+     */
+    public function lockSize()
+    {
+        $this->fixedSize = $this->count();
+
+        return $this;
+    }
+
+    public function isFixedSize()
+    {
+        return !(is_null($this->fixedSize));
     }
 
     /**
