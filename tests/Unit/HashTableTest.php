@@ -146,9 +146,55 @@ class HashTableTest extends TestCase
         $hashtable628 = new HashTable628();
         $this->assertInstanceOf('\ArrayAccess', $hashtable628);
         $this->assertInstanceOf('\Iterator', $hashtable628);
-        $this->assertInstanceOf('\DruiD628\Primatives\Base\Contracts\ArrayInterface', $hashtable628);
+        $this->assertInstanceOf('\DruiD628\Primatives\Base\Contracts\HashTableInterface', $hashtable628);
     }
 
+    public function testKeyValidation()
+    {
+        try {
+
+            $hashtable628 = new HashTable628([
+                0 => 'abc',
+                1 => 'bcd',
+                2 => 'cde',
+                3 => 'def',
+            ]);
+        } catch (\Exception $e) {
+            $this->assertInstanceOf('\DruiD628\Exceptions\InvalidKeyTypeException', $e);
+        }
+
+    }
+
+    public function testAddGet()
+    {
+        $hashtable628 = new HashTable628([
+            'one'   => 'abc',
+            'two'   => 'bcd',
+            'three' => 'cde',
+            'four'  => 'def',
+        ]);
+
+        $key   = 'five';
+        $value = 'this Should Work';
+        $hashtable628->add($key, $value);
+
+        $this->assertEquals($value, $hashtable628->get($key));
+    }
+
+    public function testReadOnly()
+    {
+        $hashtable628 = new HashTable628([
+            'one'   => 'abc',
+            'two'   => 'bcd',
+            'three' => 'cde',
+            'four'  => 'def',
+        ], true);
+
+        $key   = 'five';
+        $value = "this Shouldn't Work";
+
+        $this->assertFalse($hashtable628->add($key, $value));
+    }
 
     public function testGetKeys()
     {
@@ -162,20 +208,15 @@ class HashTableTest extends TestCase
         $this->assertEquals(['a', 'b', 'c', 'd'], $hashtable628->getKeys());
     }
 
-
-    public function testKeyValidation()
+    public function testGetValues()
     {
-        try {
-
         $hashtable628 = new HashTable628([
-            0 => 'abc',
-            1 => 'bcd',
-            2 => 'cde',
-            3 => 'def',
+            'a' => 'abc',
+            'b' => 'bcd',
+            'c' => 'cde',
+            'd' => 'def',
         ]);
-        } catch (\Exception $e) {
-            $this->assertInstanceOf('\DruiD628\Exceptions\InvalidKeyTypeException', $e);
-        }
 
+        $this->assertEquals(['abc', 'bcd', 'cde', 'def'], $hashtable628->getValues());
     }
 }

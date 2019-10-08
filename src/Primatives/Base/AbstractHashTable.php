@@ -3,25 +3,53 @@
 namespace DruiD628\Primatives\Base;
 
 use DruiD628\Exceptions\InvalidKeyTypeException;
-use DruiD628\Primatives\Base\Contracts\ArrayInterface;
+use DruiD628\Primatives\Base\Contracts\HashTableInterface;
 use DruiD628\Primatives\Base\Contracts\StringInterface;
-use DruiD628\Primatives\String628;
+use DruiD628\Primatives\{String628, Array628};
 
-class AbstractHashTable implements ArrayInterface
+class AbstractHashTable implements HashTableInterface
 {
+    /** @var bool $readOnly */
+    protected $readOnly;
+
     /** @var int $position position sentinel variable */
     protected $position;
+
     /** @var array $data */
     protected $data;
 
-    public function __construct($data = [])
+    public function __construct($data = [], $readOnly = false)
     {
-
         if (!$this->validateKeys($data)) {
             throw new InvalidKeyTypeException("Invalid Key type for HashTable");
         }
+
         $this->data     = $data;
         $this->position = 0;
+        $this->readOnly = $readOnly;
+    }
+
+    /**
+     * @param string $key
+     * @param mixed $value
+     *
+     * @return $this
+     * @throws InvalidKeyTypeException
+     *
+     */
+    public function add($key, $value)
+    {
+        return $this->offsetSet($key, $value);
+    }
+
+    /**
+     * @param $key
+     *
+     * @return mixed
+     */
+    public function get($key)
+    {
+        return $this->offsetGet($key);
     }
 
     /**
@@ -84,7 +112,11 @@ class AbstractHashTable implements ArrayInterface
      */
     public function offsetGet($offset)
     {
-        return $this->data[$offset];
+        if ($this->offsetExists($offset)) {
+            return $this->data[$offset];
+        }
+
+        return false;
     }
 
     /**
@@ -96,15 +128,23 @@ class AbstractHashTable implements ArrayInterface
      * @param mixed $value <p>
      * The value to set.
      * </p>
-     * @return void
+     * @return $this
      * @since 5.0.0
+     * @throws InvalidKeyTypeException
      */
     public function offsetSet($offset, $value)
     {
+        if ($this->isReadOnly()) {
+            return false;
+        }
+
         if (!$this->validateKey($offset)) {
             throw new InvalidKeyTypeException(sprintf("Invalid Key type (%s) for HashTable", gettype($offset)));
         }
-        return $this->data[$offset] = $value;
+
+        $this->data[$offset] = $value;
+
+        return $this;
     }
 
     /**
@@ -124,6 +164,7 @@ class AbstractHashTable implements ArrayInterface
     /**
      * Return the current element
      * @link https://php.net/manual/en/iterator.current.php
+     *
      * @return mixed Can return any type.
      * @since 5.0.0
      */
@@ -135,6 +176,7 @@ class AbstractHashTable implements ArrayInterface
     /**
      * Move forward to next element
      * @link https://php.net/manual/en/iterator.next.php
+     *
      * @return void Any returned value is ignored.
      * @since 5.0.0
      */
@@ -194,11 +236,41 @@ class AbstractHashTable implements ArrayInterface
         $this->data = $data;
     }
 
+    /**
+     * Return an array of keys
+     *
+     * @return array
+     */
     public function getKeys()
     {
         return array_keys($this->data);
     }
 
+    /**
+     * Return an array of values
+     *
+     * @return array
+     */
+    public function getValues()
+    {
+        return array_values($this->data);
+    }
+
+    /**
+     * Is this HashTable readOnly?
+     *
+     * @return bool
+     */
+    public function isReadOnly()
+    {
+        return $this->readOnly;
+    }
+
+    /**
+     * @param array $dataSet
+     *
+     * @return bool
+     */
     protected function validateKeys(array $dataSet)
     {
         foreach (array_keys($dataSet) as $key) {
@@ -210,6 +282,11 @@ class AbstractHashTable implements ArrayInterface
         return true;
     }
 
+    /**
+     * @param $key
+     *
+     * @return bool
+     */
     protected function validateKey($key)
     {
         return is_string($key);
