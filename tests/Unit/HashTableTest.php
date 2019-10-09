@@ -139,6 +139,14 @@ class HashTableTest extends TestCase
         $this->assertEquals($stuffAndThangs, $hashtable628->offsetGet('z'));
         $hashtable628->offsetUnset('z');
         $this->assertFalse($hashtable628->offsetExists('z'));
+
+        try {
+           $hashtable628[529] = 'Doc McStuffAndThangs';
+        }catch(\Exception $e) {
+
+            $this->assertInstanceOf('\DruiD628\Exceptions\InvalidKeyTypeException', $e);
+            $this->assertEquals('Invalid Key type (integer) for HashTable', $e->getMessage());
+        }
     }
 
     public function testInterfaces()
@@ -174,11 +182,13 @@ class HashTableTest extends TestCase
             'four'  => 'def',
         ]);
 
-        $key   = 'five';
-        $value = 'this Should Work';
-        $hashtable628->add($key, $value);
+        $key       = 'five';
+        $value     = 'this Should Work';
+        $testValue = $hashtable628->add($key, $value);
+
 
         $this->assertEquals($value, $hashtable628->get($key));
+        $this->assertInstanceOf('DruiD628\Primatives\HashTable628', $testValue);
     }
 
     public function testReadOnly()
@@ -244,14 +254,43 @@ class HashTableTest extends TestCase
             'd' => 'def',
         ];
 
-        $hashTable = new HashTable628($data, false, 5);
+        $hashTable  = new HashTable628($data, false, 5);
+        $hashTable2 = new HashTable628($data, false, true);
 
+        // hashtable
         $this->assertTrue($hashTable->isFixedSize());
         $this->assertEquals(5, $hashTable->count());
         $this->assertEquals(0, $hashTable[4]);
 
         $hashTable->add('seven', "YOU KEELING ME");
         $this->assertFalse($hashTable['seven']);
+
+        // hashtable2
+        $this->assertEquals(4, $hashTable2->count());
+        $this->assertFalse($hashTable[4]);
+
+        $hashTable->add('seven', "YOU KEELING ME");
+        $this->assertFalse($hashTable['seven']);
+    }
+
+    public function testFixedSizeTooBig()
+    {
+        $data = [
+            'a' => 'abc',
+            'b' => 'bcd',
+            'c' => 'cde',
+            'd' => 'def',
+        ];
+
+        try {
+
+            $hashTable = new HashTable628($data, false, 2);
+
+        } catch (\Exception $e) {
+
+            $this->assertInstanceOf('\Exception', $e);
+            $this->assertEquals('HashTable data size is larger than defined size', $e->getMessage());
+        }
     }
 
     public function testLockSize()
@@ -274,4 +313,16 @@ class HashTableTest extends TestCase
         $this->assertFalse($hashTable['seven']);
     }
 
+    public function testTraversable()
+    {
+        $data     = [
+            '2a' => 'abc',
+            '2b' => 'bcd',
+            '2c' => 'cde',
+            '2d' => 'def',
+        ];
+        $array628 = new HashTable628($data);
+
+        $this->assertInstanceOf('\Traversable', $array628);
+    }
 }

@@ -29,6 +29,9 @@ interface HashTableInterface extends ArrayAccess, Iterator
 
     function next();
 
+    // not part of Iterator
+    function prev();
+
     function current();
 
     // ArrayAccess

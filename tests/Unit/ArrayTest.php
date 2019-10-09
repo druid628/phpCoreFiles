@@ -7,7 +7,6 @@ use PHPUnit\Framework\TestCase;
 
 class ArrayTest extends TestCase
 {
-
     public function testCount()
     {
         $array628 = new Array628([
@@ -139,6 +138,15 @@ class ArrayTest extends TestCase
         $this->assertEquals($stuffAndThangs, $array628->offsetGet(25));
         $array628->offsetUnset(25);
         $this->assertFalse($array628->offsetExists(25));
+
+
+        try {
+            $array628['doc'] = 'McStuffAndThangs';
+        }catch(\Exception $e) {
+
+            $this->assertInstanceOf('\DruiD628\Exceptions\InvalidKeyTypeException', $e);
+            $this->assertEquals('Invalid Key type (string) for Array', $e->getMessage());
+        }
     }
 
     public function testInterfaces()
@@ -196,5 +204,18 @@ class ArrayTest extends TestCase
         $array628 = new Array628($data);
 
         $this->assertEquals($data[2], $array628[2]);
+    }
+
+    public function testTraversable()
+    {
+        $data     = [
+            'abc',
+            'bcd',
+            'cde',
+            'def',
+        ];
+        $array628 = new Array628($data);
+
+        $this->assertInstanceOf('\Traversable', $array628);
     }
 }

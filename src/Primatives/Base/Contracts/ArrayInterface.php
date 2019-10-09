@@ -18,6 +18,9 @@ interface ArrayInterface extends ArrayAccess, Iterator
 
     function next();
 
+    // not part of Iterator
+    function prev();
+
     function current();
 
     function offsetUnset($offset);
