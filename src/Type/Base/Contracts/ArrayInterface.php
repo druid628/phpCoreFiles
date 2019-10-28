@@ -1,26 +1,15 @@
 <?php
 
-
-namespace DruiD628\Primatives\Base\Contracts;
+namespace DruiD628\Type\Base\Contracts;
 
 use ArrayAccess;
 use Iterator;
 
-interface HashTableInterface extends ArrayAccess, Iterator
+interface ArrayInterface extends ArrayAccess, Iterator
 {
-    function add($key, $value);
-
-    function get($key);
-
-    function getKeys();
-
-    function getValues();
 
     function count(): int;
 
-    function isReadOnly();
-
-    // Iterator
     function rewind();
 
     function valid();
@@ -34,7 +23,6 @@ interface HashTableInterface extends ArrayAccess, Iterator
 
     function current();
 
-    // ArrayAccess
     function offsetUnset($offset);
 
     function offsetSet($offset, $value);
@@ -42,5 +30,4 @@ interface HashTableInterface extends ArrayAccess, Iterator
     function offsetGet($offset);
 
     function offsetExists($offset);
-
 }

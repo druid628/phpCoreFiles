@@ -2,7 +2,7 @@
 
 namespace tests\Unit;
 
-use DruiD628\Primatives\HashTable628;
+use DruiD628\Type\HashTable628;
 use PHPUnit\Framework\TestCase;
 
 class HashTableTest extends TestCase
@@ -29,7 +29,7 @@ class HashTableTest extends TestCase
             'd' => 'def',
         ]);
 
-        $this->assertInstanceOf('\DruiD628\Primatives\String628', $hashtable628->implode(" "));
+        $this->assertInstanceOf('\DruiD628\Type\String628', $hashtable628->implode(" "));
     }
 
     public function testNext()
@@ -154,7 +154,7 @@ class HashTableTest extends TestCase
         $hashtable628 = new HashTable628();
         $this->assertInstanceOf('\ArrayAccess', $hashtable628);
         $this->assertInstanceOf('\Iterator', $hashtable628);
-        $this->assertInstanceOf('\DruiD628\Primatives\Base\Contracts\HashTableInterface', $hashtable628);
+        $this->assertInstanceOf('\DruiD628\Type\Base\Contracts\HashTableInterface', $hashtable628);
     }
 
     public function testKeyValidation()
@@ -188,7 +188,7 @@ class HashTableTest extends TestCase
 
 
         $this->assertEquals($value, $hashtable628->get($key));
-        $this->assertInstanceOf('DruiD628\Primatives\HashTable628', $testValue);
+        $this->assertInstanceOf('DruiD628\Type\HashTable628', $testValue);
     }
 
     public function testReadOnly()

@@ -1,29 +1,69 @@
 <?php
 
-namespace DruiD628\Primatives\Base;
+namespace DruiD628\Type\Base;
 
 use DruiD628\Exceptions\InvalidKeyTypeException;
-use DruiD628\Primatives\Base\Contracts\ArrayInterface;
-use DruiD628\Primatives\Base\Contracts\StringInterface;
-use DruiD628\Primatives\String628;
+use DruiD628\Type\{String628};
+use DruiD628\Type\Base\Contracts\HashTableInterface;
+use DruiD628\Type\Base\Contracts\StringInterface;
+use \Exception;
 
-class AbstractArray implements ArrayInterface
+class AbstractHashTable implements HashTableInterface
 {
-    /** @var boolean $strict */
-    protected $strict;
+    /** @var bool $readOnly */
+    protected $readOnly;
+
     /** @var int $position position sentinel variable */
     protected $position;
+
     /** @var array $data */
     protected $data;
 
-    public function __construct($data = [], $strict = true)
+    /** @var int $fixedSize locking a HashTable to a fixed size */
+    protected $fixedSize;
+
+    public function __construct($data = [], $readOnly = false, $fixedSize = null)
     {
-        $this->strict = $strict;
         if (!$this->validateKeys($data)) {
-            throw new InvalidKeyTypeException("Invalid Key type for Array");
+            throw new InvalidKeyTypeException("Invalid Key type for HashTable");
         }
-        $this->data     = $data;
-        $this->position = 0;
+        if (is_int($fixedSize)) {
+            if (count($data) < $fixedSize) {
+                $data = array_pad($data, $fixedSize, 0);
+            } elseif (count($data) > $fixedSize) {
+                throw new Exception('HashTable data size is larger than defined size');
+            }
+        } elseif (is_bool($fixedSize) && $fixedSize) {
+            $fixedSize = count($data);
+        }
+
+        $this->data      = $data;
+        $this->position  = 0;
+        $this->readOnly  = $readOnly;
+        $this->fixedSize = $fixedSize;
+    }
+
+    /**
+     * @param string $key
+     * @param mixed $value
+     *
+     * @return $this
+     * @throws InvalidKeyTypeException
+     *
+     */
+    public function add($key, $value)
+    {
+        return $this->offsetSet($key, $value);
+    }
+
+    /**
+     * @param $key
+     *
+     * @return mixed
+     */
+    public function get($key)
+    {
+        return $this->offsetGet($key);
     }
 
     /**
@@ -86,7 +126,11 @@ class AbstractArray implements ArrayInterface
      */
     public function offsetGet($offset)
     {
-        return $this->data[$offset];
+        if ($this->offsetExists($offset)) {
+            return $this->data[$offset];
+        }
+
+        return false;
     }
 
     /**
@@ -98,15 +142,30 @@ class AbstractArray implements ArrayInterface
      * @param mixed $value <p>
      * The value to set.
      * </p>
-     * @return void
+     * @return $this
      * @since 5.0.0
+     * @throws InvalidKeyTypeException
      */
     public function offsetSet($offset, $value)
     {
-        if ($this->isStrict() && !$this->validateKey($offset)) {
-            throw new InvalidKeyTypeException(sprintf("Invalid Key type (%s) for Array", gettype($offset)));
+        if ($this->isReadOnly()) {
+            return false;
         }
-        return $this->data[$offset] = $value;
+
+        if (!$this->offsetExists($offset) &&
+            $this->isFixedSize() &&
+            $this->count() == $this->fixedSize
+           ) {
+
+            return false;
+        }
+        if (!$this->validateKey($offset)) {
+            throw new InvalidKeyTypeException(sprintf("Invalid Key type (%s) for HashTable", gettype($offset)));
+        }
+
+        $this->data[$offset] = $value;
+
+        return $this;
     }
 
     /**
@@ -126,6 +185,7 @@ class AbstractArray implements ArrayInterface
     /**
      * Return the current element
      * @link https://php.net/manual/en/iterator.current.php
+     *
      * @return mixed Can return any type.
      * @since 5.0.0
      */
@@ -137,6 +197,7 @@ class AbstractArray implements ArrayInterface
     /**
      * Move forward to next element
      * @link https://php.net/manual/en/iterator.next.php
+     *
      * @return void Any returned value is ignored.
      * @since 5.0.0
      */
@@ -196,26 +257,76 @@ class AbstractArray implements ArrayInterface
         $this->data = $data;
     }
 
-    public function isStrict()
+    /**
+     * Return an array of keys
+     *
+     * @return array
+     */
+    public function getKeys()
     {
-        return $this->strict;
+        return array_keys($this->data);
     }
 
+    /**
+     * Return an array of values
+     *
+     * @return array
+     */
+    public function getValues()
+    {
+        return array_values($this->data);
+    }
+
+    /**
+     * Is this HashTable readOnly?
+     *
+     * @return bool
+     */
+    public function isReadOnly()
+    {
+        return $this->readOnly;
+    }
+
+    /**
+     * Locks HashTable to current size
+     *
+     * @return $this
+     */
+    public function lockSize()
+    {
+        $this->fixedSize = $this->count();
+
+        return $this;
+    }
+
+    public function isFixedSize()
+    {
+        return !(is_null($this->fixedSize));
+    }
+
+    /**
+     * @param array $dataSet
+     *
+     * @return bool
+     */
     protected function validateKeys(array $dataSet)
     {
-        if ($this->isStrict()) {
-            foreach (array_keys($dataSet) as $key) {
-                if (!($this->validateKey($key))) {
-                    return false;
-                }
+        foreach (array_keys($dataSet) as $key) {
+            if (!($this->validateKey($key))) {
+                return false;
             }
         }
 
         return true;
     }
 
+    /**
+     * @param $key
+     *
+     * @return bool
+     */
     protected function validateKey($key)
     {
-        return is_int($key);
+        return is_string($key);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace DruiD628\Primatives\Base\Contracts;
+namespace DruiD628\Type\Base\Contracts;
 
 interface StringInterface
 {

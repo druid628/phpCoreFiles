@@ -1,9 +1,9 @@
 <?php
 
-namespace DruiD628\Primatives\Base;
+namespace DruiD628\Type\Base;
 
-use DruiD628\Primatives\Array628;
-use DruiD628\Primatives\Base\Contracts\{ ArrayInterface, StringInterface };
+use DruiD628\Type\Array628;
+use DruiD628\Type\Base\Contracts\{ ArrayInterface, StringInterface };
 
 class AbstractString implements StringInterface
 {

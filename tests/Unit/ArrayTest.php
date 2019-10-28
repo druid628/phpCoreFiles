@@ -2,7 +2,7 @@
 
 namespace tests\Unit;
 
-use DruiD628\Primatives\Array628;
+use DruiD628\Type\Array628;
 use PHPUnit\Framework\TestCase;
 
 class ArrayTest extends TestCase
@@ -28,7 +28,7 @@ class ArrayTest extends TestCase
             'def',
         ]);
 
-        $this->assertInstanceOf('\DruiD628\Primatives\String628', $array628->implode(" "));
+        $this->assertInstanceOf('\DruiD628\Type\String628', $array628->implode(" "));
     }
 
     public function testNext()
@@ -154,7 +154,7 @@ class ArrayTest extends TestCase
         $array628 = new Array628();
         $this->assertInstanceOf('\ArrayAccess', $array628);
         $this->assertInstanceOf('\Iterator', $array628);
-        $this->assertInstanceOf('\DruiD628\Primatives\Base\Contracts\ArrayInterface', $array628);
+        $this->assertInstanceOf('\DruiD628\Type\Base\Contracts\ArrayInterface', $array628);
     }
 
     public function testPositiveStrictness()
