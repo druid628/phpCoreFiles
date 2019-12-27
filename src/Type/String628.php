@@ -9,7 +9,7 @@ use DruiD628\Type\Base\AbstractString;
  *
  * @package DruiD628\Type
  */
-class String628 extends AbstractString
+final class String628 extends AbstractString
 {
 
 }

@@ -11,5 +11,4 @@ use DruiD628\Type\Base\AbstractDictionary;
  */
 final class Dictionary628 extends AbstractDictionary
 {
-
 }

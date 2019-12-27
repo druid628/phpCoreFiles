@@ -11,6 +11,4 @@ use DruiD628\Type\Base\AbstractArray;
  */
 final class Array628 extends AbstractArray
 {
-
-
 }
