@@ -106,6 +106,7 @@ class AbstractArray implements ArrayInterface
         if ($this->isStrict() && !$this->validateKey($offset)) {
             throw new InvalidKeyTypeException(sprintf("Invalid Key type (%s) for Array", gettype($offset)));
         }
+
         return $this->data[$offset] = $value;
     }
 
