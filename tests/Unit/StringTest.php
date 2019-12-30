@@ -52,6 +52,17 @@ class StringTest extends TestCase
 
     }
 
+    public function testHasValue()
+    {
+        $stringValue = 'City';
+        $string628 = new String628();
+        $this->assertFalse($string628->hasValue());
+        $string628->setValue($stringValue);
+        $this->assertTrue($string628->hasValue());
+        $this->assertEquals($stringValue, $string628->getValue());
+
+    }
+
     public function testToString()
     {
         $stringValue = 'Stuff & Thangs Coral';

@@ -15,7 +15,7 @@ class AbstractString implements StringInterface
     }
 
     /**
-     * @return int
+     * @inheritDoc
      */
     public function length(): int
     {
@@ -23,6 +23,8 @@ class AbstractString implements StringInterface
     }
 
     /**
+     * Convert string to UPPER CASE
+     *
      * @return string
      */
     public function upper(): string
@@ -31,6 +33,8 @@ class AbstractString implements StringInterface
     }
 
     /**
+     * Convert string to lower case
+     *
      * @return string
      */
     public function lower(): string
@@ -38,22 +42,24 @@ class AbstractString implements StringInterface
         return strtolower($this->getValue());
     }
 
+    /**
+     * @inheritDoc
+     */
     public function explode($delimiter = '', $limit = PHP_INT_MAX): ArrayInterface
     {
         return new Array628(explode($delimiter, $this->getValue(), $limit));
     }
 
     /**
-     * @return string
+     * @inheritDoc
      */
     public function __toString(): string
     {
         return $this->getValue();
     }
 
-
     /**
-     * @return string
+     * @inheritDoc
      */
     public function getValue(): string
     {
@@ -61,9 +67,15 @@ class AbstractString implements StringInterface
     }
 
     /**
-     * @param string $value
-     *
-     * @return StringInterface
+     * @inheritDoc
+     */
+    public function hasValue(): bool
+    {
+        return !(is_null($this->value));
+    }
+
+    /**
+     * @inheritDoc
      */
     public function setValue($value): StringInterface
     {
